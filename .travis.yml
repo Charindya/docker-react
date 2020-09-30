@@ -1,0 +1,18 @@
+#anytime we use docker, we need superuse permissions
+sudo: required
+
+#tells travis we need docker CLI pre-installed
+services:
+  -docker
+
+# a series of commands that run before deployment or test starts
+#we want to build our docker image before test as below
+#we tag since preiously we've been copying in the docker ID when running, we can use tag instead inside this file
+before_install:
+  - docker build -t charindya/docker-react -f Dockerfile.dev .
+
+#script sections consists of commands that are required to run test
+script:
+  - docker run -e CI=true charindya/docker-react npm run test
+
+#travis cLI will look for a status code of 0 or any other number to see if it succeeded or failed
