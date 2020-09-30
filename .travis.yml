@@ -3,7 +3,7 @@ sudo: required
 
 #tells travis we need docker CLI pre-installed
 services:
-  -docker
+  - docker
 
 # a series of commands that run before deployment or test starts
 #we want to build our docker image before test as below
@@ -30,13 +30,14 @@ script:
 # on:branch:master means any time code is pushed to branch master,that's the time to deploy
 deploy:
   provider: elasticbeanstalk
-  region: "us-east-2"
-  app: "docker-react"
-  env: "DockerReact-env"
-  bucket_name: "elasticbeanstalk-us-east-2-327304345726"
-  bucket_path: "docker-react"
+  region: 'us-east-2'
+  app: 'docker-react'
+  env: 'DockerReact-env'
+  bucket_name: 'elasticbeanstalk-us-east-2-327304345726'
+  bucket_path: 'docker-react'
   on:
     branch: master
   access_key_id: $AWS_ACCESS_KEY
-  secret_access_key:
-    secure: "AWS_SECRET_KEY"
+  secret_access_key: $AWS_SECRET_KEY
+
+
