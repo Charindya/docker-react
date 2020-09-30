@@ -16,3 +16,27 @@ script:
   - docker run -e CI=true charindya/docker-react npm run test
 
 #travis cLI will look for a status code of 0 or any other number to see if it succeeded or failed
+
+###the above are for building the iamge and running tests on it
+# nnow we're going to add another section to address deployment
+# this will tell Travis CI exactly how to take our app and deploy it off to AWS
+# region depends on where the elasticbeanstalk was created
+# app is the name of the app in the elastic beanstalk dashboard
+# env is the env of the app in the EBS dashboard
+# the bucket_name will refer to  all the files the in the github repo which are zipped up into a single file and dumped into an S3 bucket which is what this refers to 
+# it's essental a hard drive running on AWS
+# Travis CI will tell AWS to use this file deploy/redeploy the app 
+# bucket_path refers the folde which will point to the application in the bucket - it is probably not created at the start by default, it is created the first time we deploy so bucket path should be the same as the app name
+# on:branch:master means any time code is pushed to branch master,that's the time to deploy
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-2-327304345726"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "AWS_SECRET_KEY"
